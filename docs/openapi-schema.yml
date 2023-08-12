@@ -2,9 +2,6 @@ openapi: 3.0.2
 info:
   title: 'Foodgram'
   version: ''
-
-servers:
-  - url: http://localhost:8000
 paths:
   /api/users/:
     get:

@@ -4,7 +4,6 @@ from django.db import models
 
 
 class User(AbstractUser):
-    """Кастомная модель юзера"""
     email = models.EmailField(
         max_length=254,
         verbose_name='Email',
@@ -45,7 +44,6 @@ class User(AbstractUser):
 
 
 class Subscribe(models.Model):
-    """Модель Подписчик."""
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,

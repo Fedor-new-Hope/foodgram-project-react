@@ -5,7 +5,6 @@ from users.models import User
 
 
 class Tag(models.Model):
-    """Модель тега"""
     name = models.CharField(
         max_length=200,
         verbose_name='Название',
@@ -30,7 +29,6 @@ class Tag(models.Model):
 
 
 class Ingredient(models.Model):
-    """Модель ингредиента"""
     name = models.CharField(
         max_length=100,
         verbose_name='Название'
@@ -49,7 +47,6 @@ class Ingredient(models.Model):
 
 
 class Recipe(models.Model):
-    """Модель рецепта"""
     author = models.ForeignKey(
         User,
         related_name='recipes',
@@ -101,7 +98,6 @@ class Recipe(models.Model):
 
 
 class IngredientInRecipe(models.Model):
-    """Модель для количества ингридиентов в рецепте."""
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
@@ -140,7 +136,6 @@ class IngredientInRecipe(models.Model):
 
 
 class FavoriteRecipe(models.Model):
-    """Модель Избранное."""
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
@@ -169,7 +164,6 @@ class FavoriteRecipe(models.Model):
 
 
 class ShoppingCart(models.Model):
-    """Модель Покупка."""
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
@@ -194,4 +188,4 @@ class ShoppingCart(models.Model):
         )
 
     def __str__(self):
-        return f'{self.user} - {self.recipe.name} '
+        return f'{self.user} - {self.recipe.name}'

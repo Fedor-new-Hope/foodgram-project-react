@@ -5,7 +5,6 @@ from users.models import Subscribe, User
 
 
 class MyUserSerializer(UserSerializer):
-    """Сериализатор для модели User"""
     is_subscribed = serializers.SerializerMethodField()
 
     class Meta:
@@ -17,10 +16,9 @@ class MyUserSerializer(UserSerializer):
             'first_name',
             'last_name',
             'is_subscribed'
-            )
+        )
 
     def get_is_subscribed(self, obj):
-        """ Проверка подписки. """
         user = self.context.get('request').user
         if user.is_anonymous:
             return False
@@ -29,6 +27,5 @@ class MyUserSerializer(UserSerializer):
 
 
 class PasswordSerializer(serializers.Serializer):
-    """Сериализатор для смены пароля (set_password)"""
     current_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)

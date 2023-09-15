@@ -40,3 +40,25 @@ python manage.py migrate
 ```
 python manage.py runserver
 ```
+
+
+
+- Запустите окружение:
+
+* Запустите docker-compose, развёртывание контейнеров выполниться в «фоновом режиме»
+```
+docker-compose up
+```
+
+docker compose stop && docker compose up --build
+
+docker-compose exec backend python manage.py makemigrations &&
+docker-compose exec backend python manage.py migrate &&
+docker-compose exec backend python manage.py collectstatic --no-input &&
+docker-compose exec backend python manage.py data_loading
+```
+
+
+```
+docker-compose exec backend python manage.py createsuperuser
+```

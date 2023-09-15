@@ -68,7 +68,7 @@ class Recipe(models.Model):
     ingredients = models.ManyToManyField(
         Ingredient,
         verbose_name='Ингредиенты',
-        through='IngredientInRecipe',
+        through='IngredientСonnetRecipe',
         related_name='recipe'
     )
     tags = models.ManyToManyField(
@@ -97,7 +97,7 @@ class Recipe(models.Model):
         return f'{self.author.email}, {self.name}'
 
 
-class IngredientInRecipe(models.Model):
+class IngredientСonnetRecipe(models.Model):
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
@@ -188,4 +188,4 @@ class ShoppingCart(models.Model):
         )
 
     def __str__(self):
-        return f'{self.user} - {self.recipe.name}'
+        return f'{self.user} - {self.recipe.name} '

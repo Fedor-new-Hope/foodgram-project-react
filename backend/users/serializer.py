@@ -20,9 +20,12 @@ class MyUserSerializer(UserSerializer):
 
     def get_is_subscribed(self, obj):
         request = self.context.get("request")
-        return (request.user.is_authenticated and
-                Subscribe.objects.filter(
-                    user=request.user, author=obj.id).exists())
+        return (
+            request.user.is_authenticated
+            and Subscribe.objects.filter(
+                user=request.user, author=obj.id
+            ).exists()
+        )
 
 
 class PasswordSerializer(serializers.Serializer):

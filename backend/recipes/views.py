@@ -10,10 +10,19 @@ from api.core_shoping import collect_shopping_cart
 from api.filters import IngredientFilter, RecipeFilter
 from api.pagination import CustomPagination
 from api.permissions import IsAuthorOrReadOnlyPermission, ReadOnly
-from api.serializers import (IngredientSerializer, RecipeSerializer,
-                             TagSerializer, UserRecipeSerializer)
-from recipes.models import (FavoriteRecipe, Ingredient, Recipe, ShoppingCart,
-                            Tag)
+from api.serializers import (
+    IngredientSerializer,
+    RecipeSerializer,
+    TagSerializer,
+    UserRecipeSerializer,
+)
+from recipes.models import (
+    FavoriteRecipe,
+    Ingredient,
+    Recipe,
+    ShoppingCart,
+    Tag,
+)
 
 
 class TagsViewSet(ReadOnlyModelViewSet):
@@ -28,7 +37,7 @@ class IngredientsViewSet(ReadOnlyModelViewSet):
     permission_classes = (ReadOnly,)
     serializer_class = IngredientSerializer
     filter_backends = (IngredientFilter,)
-    search_fields = ('^name',)
+    search_fields = ("^name",)
     pagination_class = None
 
 
@@ -38,10 +47,12 @@ class RecipesViewSet(viewsets.ModelViewSet):
     pagination_class = CustomPagination
     filter_backends = (DjangoFilterBackend,)
     filterset_class = RecipeFilter
-    permission_classes = (IsAuthorOrReadOnlyPermission, )
+    permission_classes = (IsAuthorOrReadOnlyPermission,)
 
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user,)
+        serializer.save(
+            author=self.request.user,
+        )
 
     def favorite_perform_cart(self, model, user, pk):
         recipe = get_object_or_404(Recipe, id=pk)
@@ -54,33 +65,36 @@ class RecipesViewSet(viewsets.ModelViewSet):
         if obj.exists():
             obj.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
-        return Response({'errors': 'Рецепт уже удален!'},
-                        status=status.HTTP_400_BAD_REQUEST)
-
-    @action(detail=True, methods=['POST', 'DELETE'],
-            permission_classes=[IsAuthenticated])
-    def favorite(self, request, pk=None):
-        if request.method == 'POST':
-            return self.favorite_perform_cart(
-                FavoriteRecipe,
-                request.user,
-                pk
-            )
-        return self.favorite_remove_cart(
-            FavoriteRecipe,
-            request.user,
-            pk
+        return Response(
+            {"errors": "Рецепт уже удален!"},
+            status=status.HTTP_400_BAD_REQUEST,
         )
 
-    @action(detail=True, methods=['POST', 'DELETE'],
-            permission_classes=[IsAuthenticated])
+    @action(
+        detail=True,
+        methods=["POST", "DELETE"],
+        permission_classes=[IsAuthenticated],
+    )
+    def favorite(self, request, pk=None):
+        if request.method == "POST":
+            return self.favorite_perform_cart(
+                FavoriteRecipe, request.user, pk
+            )
+        return self.favorite_remove_cart(FavoriteRecipe, request.user, pk)
+
+    @action(
+        detail=True,
+        methods=["POST", "DELETE"],
+        permission_classes=[IsAuthenticated],
+    )
     def shopping_cart(self, request, pk=None):
-        if request.method == 'POST':
+        if request.method == "POST":
             return self.favorite_perform_cart(ShoppingCart, request.user, pk)
         return self.favorite_remove_cart(ShoppingCart, request.user, pk)
 
-    @action(detail=False, methods=['GET'],
-            permission_classes=(IsAuthenticated,))
+    @action(
+        detail=False, methods=["GET"], permission_classes=(IsAuthenticated,)
+    )
     def download_shopping_cart(self, request):
         user = request.user
         if not user.shopping_cart.exists():

@@ -8,13 +8,11 @@ from recipes.models import Ingredient
 class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         with open(
-            ('/app/data/' + 'ingredients.csv'),
-            encoding='utf8'
+            ("/app/data/" + "ingredients.csv"), encoding="utf8"
         ) as file:
             reader = csv.reader(file)
             for row in reader:
                 Ingredient.objects.get_or_create(
-                    name=row[0],
-                    measurement_unit=row[1]
+                    name=row[0], measurement_unit=row[1]
                 )
-            print('Ингредиенты загружены')
+            print("Ингредиенты загружены")

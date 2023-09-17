@@ -16,16 +16,16 @@ class SetPasswordView(APIView):
     def post(self, request):
         serializer = PasswordSerializer(
             data=request.data,
-            context={'request': request},
+            context={"request": request},
         )
         if serializer.is_valid():
             serializer.save()
             return Response(
-                {'message': 'Пароль изменен!'},
+                {"message": "Пароль изменен!"},
                 status=status.HTTP_201_CREATED,
             )
         return Response(
-            {'error': 'Введите верные данные!'},
+            {"error": "Введите верные данные!"},
             status=status.HTTP_400_BAD_REQUEST,
         )
 
@@ -33,49 +33,52 @@ class SetPasswordView(APIView):
 class MyViewSet(UserViewSet):
     queryset = User.objects.all()
     serializer_class = MyUserSerializer
-    filter_backends = (DjangoFilterBackend, filters.SearchFilter,)
-    search_fields = ('username', 'email')
+    filter_backends = (
+        DjangoFilterBackend,
+        filters.SearchFilter,
+    )
+    search_fields = ("username", "email")
     permission_classes = (AllowAny,)
 
-    @action(methods=['POST', 'DELETE'], detail=True,)
+    @action(
+        methods=["POST", "DELETE"],
+        detail=True,
+    )
     def subscribe(self, request, id):
         author = get_object_or_404(User, id=id)
-        if request.method == 'POST':
+        if request.method == "POST":
             if request.user.id == author.id:
-                raise ValueError('Нельзя подписаться на себя самого')
+                raise ValueError("Нельзя подписаться на себя самого")
             serializer = SubscribeSerializer(
-                Subscribe.objects.create(
-                    user=request.user,
-                    author=author),
-                context={'request': request})
-            return Response(
-                serializer.data,
-                status=status.HTTP_201_CREATED)
-        if request.method == 'DELETE':
+                Subscribe.objects.create(user=request.user, author=author),
+                context={"request": request},
+            )
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        if request.method == "DELETE":
             if Subscribe.objects.filter(
-                user=request.user,
-                author=author
+                user=request.user, author=author
             ).exists():
                 Subscribe.objects.filter(
-                    user=request.user,
-                    author=author
+                    user=request.user, author=author
                 ).delete()
                 return Response(status=status.HTTP_204_NO_CONTENT)
             return Response(
-                {'errors': 'Нельзя отписаться от автора, '
-                 'на которго вы не подписаны!'},
+                {
+                    "errors": "Нельзя отписаться от автора, "
+                    "на которго вы не подписаны!"
+                },
                 status=status.HTTP_400_BAD_REQUEST,
             )
 
-    @action(methods=['GET'],
-            detail=False,
-            permission_classes=(IsAuthenticated, )
-            )
+    @action(
+        methods=["GET"], detail=False, permission_classes=(IsAuthenticated,)
+    )
     def subscriptions(self, request):
         serializer = SubscribeSerializer(
             self.paginate_queryset(
-                Subscribe.objects.filter(
-                    user=request.user
-                )),
-            many=True, context={'request': request})
+                Subscribe.objects.filter(user=request.user)
+            ),
+            many=True,
+            context={"request": request},
+        )
         return self.get_paginated_response(serializer.data)

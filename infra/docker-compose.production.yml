@@ -8,25 +8,22 @@ volumes:
 services:
   db:
     image: postgres:13.0 
-    container_name: foodgram-db  
     env_file: .env
     volumes:
       - PG_data:/var/lib/postgresql/data/
 
   backend:
     image: fedor389111/foodgram_backend
-    container_name: foodgram-backend
     env_file: .env
     depends_on:
       - db
     volumes:
       - static_data:/app/static/
-      - media_data:/app/media
+      - media_data:/app/media/
 
   frontend:
     env_file: .env
     image: fedor389111/foodgram_frontend
-    container_name: foodgram-frontend
     volumes:
       - ../frontend/:/app/result_build/
 

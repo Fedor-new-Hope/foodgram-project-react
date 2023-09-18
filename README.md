@@ -62,12 +62,3 @@ docker-compose exec backend python manage.py data_loading
 ```
 docker-compose exec backend python manage.py createsuperuser
 ```
-docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic --no-input
-
-docker compose -f docker-compose.production.yml exec backend python manage.py createsuperuser
-
-docker compose -f docker-compose.production.yml exec backend python manage.py createsuperuser
-
-docker compose -f docker-compose.production.yml exec backend python manage.py makemigrations &&
-
-docker compose -f docker-compose.production.yml exec backend python manage.py migrate

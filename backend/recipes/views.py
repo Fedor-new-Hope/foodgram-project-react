@@ -1,28 +1,18 @@
+from api.core_shoping import collect_shopping_cart
+from api.filters import IngredientFilter, RecipeFilter
+from api.pagination import CustomPagination
+from api.permissions import IsAuthorOrReadOnlyPermission, ReadOnly
+from api.serializers import (IngredientSerializer, RecipeSerializer,
+                             TagSerializer, UserRecipeSerializer)
 from django_filters.rest_framework import DjangoFilterBackend
+from recipes.models import (FavoriteRecipe, Ingredient, Recipe, ShoppingCart,
+                            Tag)
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet
-
-from api.core_shoping import collect_shopping_cart
-from api.filters import IngredientFilter, RecipeFilter
-from api.pagination import CustomPagination
-from api.permissions import IsAuthorOrReadOnlyPermission, ReadOnly
-from api.serializers import (
-    IngredientSerializer,
-    RecipeSerializer,
-    TagSerializer,
-    UserRecipeSerializer,
-)
-from recipes.models import (
-    FavoriteRecipe,
-    Ingredient,
-    Recipe,
-    ShoppingCart,
-    Tag,
-)
 
 
 class TagsViewSet(ReadOnlyModelViewSet):

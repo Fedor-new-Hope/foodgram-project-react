@@ -1,3 +1,4 @@
+from api.serializers import SubscribeSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
 from rest_framework import filters, status
@@ -6,8 +7,6 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-from api.serializers import SubscribeSerializer
 from users.models import Subscribe, User
 from users.serializer import MyUserSerializer, PasswordSerializer
 

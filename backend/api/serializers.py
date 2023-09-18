@@ -1,15 +1,8 @@
+from api.core_image import Base64ImageField
+from recipes.models import (FavoriteRecipe, Ingredient, IngredientСonnetRecipe,
+                            Recipe, ShoppingCart, Tag)
 from rest_framework import serializers, validators
 from rest_framework.generics import get_object_or_404
-
-from api.core_image import Base64ImageField
-from recipes.models import (
-    FavoriteRecipe,
-    Ingredient,
-    IngredientСonnetRecipe,
-    Recipe,
-    ShoppingCart,
-    Tag,
-)
 from users.models import Subscribe, User
 from users.serializer import MyUserSerializer
 

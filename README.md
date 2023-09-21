@@ -2,6 +2,7 @@
 
 доступен по адресу https://foodbigbubam.ddns.net/
 
+
 ## Стек технологий:
 * Python 
 * Django 

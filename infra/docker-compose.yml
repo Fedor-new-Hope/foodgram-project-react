@@ -40,4 +40,3 @@ services:
       - media_data:/var/html/media/
     depends_on:
       - backend
-

@@ -9,10 +9,13 @@ class Tag(models.Model):
         max_length=200, verbose_name="Название", unique=True
     )
     slug = models.SlugField(
+        help_text='метка из букв, цифр, подчеркивания, дефиса',
         verbose_name="Slug",
         unique=True,
     )
-    color = models.CharField(max_length=7, verbose_name="Цвет", unique=True)
+    color = models.CharField(
+        help_text='Цвет в HEX пр.(#000000)',
+        max_length=7, verbose_name="Цвет", unique=True)
 
     class Meta:
         ordering = ("name", "slug")

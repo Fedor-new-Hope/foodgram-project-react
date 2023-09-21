@@ -1,6 +1,15 @@
 # Проект «Фудграм» (продуктовый помошник)
 доступен по адресу https://foodbigbubam.ddns.net/
 
+## Стек технологий:
+* Python 
+* Django 
+* DjangoRestFramework 
+* PostgresSQL 
+* Nginx
+* Docker, Docker-compose, DockerHub
+
+## Запуск проекта локально:
 - Клонировать репозиторий и перейти в него в командной строке:
 
 ```
@@ -62,3 +71,8 @@ docker-compose exec backend python manage.py data_loading
 ```
 docker-compose exec backend python manage.py createsuperuser
 ```
+### Проект готов к работе
+
+Backend проекта выполнил студент 56 когорты Яндекс Практикума  
+Fedor Kulabuhov
+https://github.com/Fedor-new-Hope

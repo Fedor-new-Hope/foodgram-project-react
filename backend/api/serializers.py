@@ -8,18 +8,21 @@ from users.serializer import MyUserSerializer
 
 
 class TagSerializer(serializers.ModelSerializer):
+    """Сериализатор для тега."""
     class Meta:
         model = Tag
         fields = "__all__"
 
 
 class IngredientSerializer(serializers.ModelSerializer):
+    """Сериализатор для ингредиента."""
     class Meta:
         model = Ingredient
         fields = "__all__"
 
 
 class IngredientСonnetRecipeSerializer(serializers.ModelSerializer):
+    """Сериализатор модели IngredientСonnetRecipe."""
     id = serializers.ReadOnlyField(source="ingredient.id")
     name = serializers.ReadOnlyField(source="ingredient.name")
     measurement_unit = serializers.ReadOnlyField(
@@ -39,6 +42,7 @@ class IngredientСonnetRecipeSerializer(serializers.ModelSerializer):
 
 
 class UserRecipeSerializer(serializers.ModelSerializer):
+    """Сериализатор для избранного или подписок."""
     image = Base64ImageField()
 
     class Meta:
@@ -49,6 +53,7 @@ class UserRecipeSerializer(serializers.ModelSerializer):
 
 
 class SubscribeSerializer(serializers.ModelSerializer):
+    """Сериализатор для подписчика."""
     id = serializers.IntegerField(source="author.id")
     email = serializers.EmailField(source="author.email")
     username = serializers.CharField(source="author.username")
@@ -72,6 +77,7 @@ class SubscribeSerializer(serializers.ModelSerializer):
         read_only_fields = ("is_subscribed",)
 
     def validate(self, data):
+        """ Проверка данных на уровне сериализатора. """
         user_id = data["user_id"]
         author_id = data["author_id"]
         if user_id == author_id:
@@ -87,11 +93,13 @@ class SubscribeSerializer(serializers.ModelSerializer):
         return data
 
     def get_is_subscribed(self, obj):
+        """ Проверка подписки. """
         return Subscribe.objects.filter(
             user=obj.user, author=obj.author
         ).exists()
 
     def get_recipes(self, obj):
+        """ Получение рецептов автора. """
         request = self.context.get("request")
         recipes_limit = request.GET.get("recipes_limit")
         recipes = Recipe.objects.filter(author=obj.author)
@@ -102,6 +110,7 @@ class SubscribeSerializer(serializers.ModelSerializer):
 
 
 class RecipeSerializer(serializers.ModelSerializer):
+    """Сериализатор рецепта."""
     tags = TagSerializer(read_only=True, many=True)
     image = Base64ImageField()
     author = MyUserSerializer(read_only=True)
@@ -129,6 +138,7 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def ingredients_recipe_add(recipe, ingredients):
+        """ Создание ингредиентов в промежуточной таблице. """
         IngredientСonnetRecipe.objects.bulk_create(
             [
                 IngredientСonnetRecipe(
@@ -141,6 +151,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         )
 
     def create(self, validated_data):
+        """ Создание рецепта. """
         image = validated_data.pop("image")
         ingredients = validated_data.pop("ingredients")
         tags = validated_data.pop("tags")
@@ -150,6 +161,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         return recipe
 
     def update(self, instance, validated_data):
+        """ Обновление рецепта. """
         instance.tags.clear()
         instance.tags.set(validated_data.pop("tags"))
         IngredientСonnetRecipe.objects.filter(recipe=instance).delete()
@@ -168,6 +180,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         return data
 
     def get_is_favorited(self, obj):
+        """ Проверка рецепта в списке избранного. """
         request = self.context.get("request")
         if request.user.is_anonymous:
             return False
@@ -175,12 +188,14 @@ class RecipeSerializer(serializers.ModelSerializer):
             recipe=obj, user=request.user).exists()
 
     def get_is_in_shopping_cart(self, obj):
+        """ Проверка рецепта в корзине покупок. """
         request = self.context.get("request")
         return (request and request.user.is_authenticated
                 and ShoppingCart.objects.filter(
                     recipe=obj, user=request.user).exists())
 
     def validate(self, data):
+        """ Валидация различных данных на уровне сериализатора. """
         ingredients = data.get("ingredients")
         tags = data.get("tags")
         if not tags:

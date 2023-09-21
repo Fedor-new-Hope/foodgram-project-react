@@ -13,6 +13,7 @@ from users.serializer import MyUserSerializer, PasswordSerializer
 
 class SetPasswordView(APIView):
     def post(self, request):
+        """Изменить пароль."""
         serializer = PasswordSerializer(
             data=request.data,
             context={"request": request},
@@ -30,6 +31,7 @@ class SetPasswordView(APIView):
 
 
 class MyViewSet(UserViewSet):
+    """Пользователи и подписки."""
     queryset = User.objects.all()
     serializer_class = MyUserSerializer
     filter_backends = (
@@ -44,6 +46,7 @@ class MyViewSet(UserViewSet):
         detail=True,
     )
     def subscribe(self, request, id):
+        """Подписаться отписаться."""
         author = get_object_or_404(User, id=id)
         if request.method == "POST":
             if request.user.id == author.id:
@@ -73,6 +76,7 @@ class MyViewSet(UserViewSet):
         methods=["GET"], detail=False, permission_classes=(IsAuthenticated,)
     )
     def subscriptions(self, request):
+        """ Получить на кого пользователь подписан. """
         serializer = SubscribeSerializer(
             self.paginate_queryset(
                 Subscribe.objects.filter(user=request.user)

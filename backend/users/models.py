@@ -3,6 +3,7 @@ from django.db import models
 
 
 class User(AbstractUser):
+    """Кастомная модель юзера"""
     email = models.EmailField(
         max_length=254, verbose_name="Email", unique=True
     )
@@ -18,6 +19,7 @@ class User(AbstractUser):
     REQUIRED_FIELDS = ("username", "password", "first_name", "last_name")
 
     class Meta:
+        ordering = ("username", "email")
         verbose_name = "Пользователь"
         verbose_name_plural = "Пользователи"
 
@@ -26,6 +28,7 @@ class User(AbstractUser):
 
 
 class Subscribe(models.Model):
+    """Модель Подписчик."""
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -40,6 +43,7 @@ class Subscribe(models.Model):
     )
 
     class Meta:
+        ordering = ("user", "author")
         verbose_name = "Подписчик"
         verbose_name_plural = "Подписчики"
         constraints = (

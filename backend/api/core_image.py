@@ -5,6 +5,7 @@ from rest_framework import serializers
 
 
 class Base64ImageField(serializers.ImageField):
+    """Кастомный тип поля для image field в модели Recipe"""
     def to_internal_value(self, data):
         if isinstance(data, str) and data.startswith("data:image"):
             format, imgstr = data.split(";base64,")

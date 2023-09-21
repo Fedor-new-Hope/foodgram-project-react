@@ -4,6 +4,7 @@ from users.models import User
 
 
 class Tag(models.Model):
+    """Модель тега"""
     name = models.CharField(
         max_length=200, verbose_name="Название", unique=True
     )
@@ -14,6 +15,7 @@ class Tag(models.Model):
     color = models.CharField(max_length=7, verbose_name="Цвет", unique=True)
 
     class Meta:
+        ordering = ("name", "slug")
         verbose_name = "Тег"
         verbose_name_plural = "Теги"
 
@@ -22,6 +24,7 @@ class Tag(models.Model):
 
 
 class Ingredient(models.Model):
+    """Модель ингредиента"""
     name = models.CharField(max_length=100, verbose_name="Название")
     measurement_unit = models.CharField(
         max_length=50,
@@ -29,6 +32,7 @@ class Ingredient(models.Model):
     )
 
     class Meta:
+        ordering = ("name", "measurement_unit")
         verbose_name = "Ингредиент"
         verbose_name_plural = "Ингредиенты"
 
@@ -37,6 +41,7 @@ class Ingredient(models.Model):
 
 
 class Recipe(models.Model):
+    """Модель рецепта"""
     author = models.ForeignKey(
         User,
         related_name="recipes",
@@ -75,6 +80,7 @@ class Recipe(models.Model):
     )
 
     class Meta:
+        ordering = ("name", "author", "cooking_time")
         verbose_name = "Рецепт"
         verbose_name_plural = "Рецепты"
 
@@ -83,6 +89,7 @@ class Recipe(models.Model):
 
 
 class IngredientСonnetRecipe(models.Model):
+    """Модель для количества ингридиентов в рецепте."""
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
@@ -109,6 +116,7 @@ class IngredientСonnetRecipe(models.Model):
     )
 
     class Meta:
+        ordering = ("recipe", "ingredient", "amount")
         verbose_name = "Количество ингредиентов"
         verbose_name_plural = "Количество ингредиента"
         constraints = (
@@ -120,6 +128,7 @@ class IngredientСonnetRecipe(models.Model):
 
 
 class FavoriteRecipe(models.Model):
+    """Модель Избранное."""
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
@@ -148,6 +157,7 @@ class FavoriteRecipe(models.Model):
 
 
 class ShoppingCart(models.Model):
+    """Модель Покупка."""
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,

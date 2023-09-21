@@ -4,6 +4,7 @@ from users.models import Subscribe, User
 
 
 class MyUserSerializer(UserSerializer):
+    """Сериализатор для модели User"""
     is_subscribed = serializers.SerializerMethodField()
 
     class Meta:
@@ -28,5 +29,6 @@ class MyUserSerializer(UserSerializer):
 
 
 class PasswordSerializer(serializers.Serializer):
+    """Сериализатор для смены пароля (set_password)"""
     current_password = serializers.CharField(required=True)
     new_password = serializers.CharField(required=True)

@@ -16,6 +16,7 @@ from rest_framework.viewsets import ReadOnlyModelViewSet
 
 
 class TagsViewSet(ReadOnlyModelViewSet):
+    """Список тэгов."""
     queryset = Tag.objects.all()
     permission_classes = (ReadOnly,)
     serializer_class = TagSerializer
@@ -23,6 +24,7 @@ class TagsViewSet(ReadOnlyModelViewSet):
 
 
 class IngredientsViewSet(ReadOnlyModelViewSet):
+    """Список ингридиентов."""
     queryset = Ingredient.objects.all()
     permission_classes = (ReadOnly,)
     serializer_class = IngredientSerializer
@@ -32,6 +34,7 @@ class IngredientsViewSet(ReadOnlyModelViewSet):
 
 
 class RecipesViewSet(viewsets.ModelViewSet):
+    """Список рецептов."""
     queryset = Recipe.objects.all()
     serializer_class = RecipeSerializer
     pagination_class = CustomPagination
@@ -66,6 +69,7 @@ class RecipesViewSet(viewsets.ModelViewSet):
         permission_classes=[IsAuthenticated],
     )
     def favorite(self, request, pk=None):
+        """Добавить рецепт в избранное или удалить из него."""
         if request.method == "POST":
             return self.favorite_perform_cart(
                 FavoriteRecipe, request.user, pk
@@ -78,6 +82,7 @@ class RecipesViewSet(viewsets.ModelViewSet):
         permission_classes=[IsAuthenticated],
     )
     def shopping_cart(self, request, pk=None):
+        """Добавить рецепт в список покупок или удалить из него."""
         if request.method == "POST":
             return self.favorite_perform_cart(ShoppingCart, request.user, pk)
         return self.favorite_remove_cart(ShoppingCart, request.user, pk)
@@ -86,6 +91,7 @@ class RecipesViewSet(viewsets.ModelViewSet):
         detail=False, methods=["GET"], permission_classes=(IsAuthenticated,)
     )
     def download_shopping_cart(self, request):
+        """Скачать корзину (список) покупок."""
         user = request.user
         if not user.shopping_cart.exists():
             return Response(status=status.HTTP_400_BAD_REQUEST)

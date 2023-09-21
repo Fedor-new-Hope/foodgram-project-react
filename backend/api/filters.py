@@ -5,6 +5,8 @@ from rest_framework.filters import SearchFilter
 
 
 class IngredientFilter(SearchFilter):
+    """Поиск по имени Ингредиента."""
+    search_param = 'name'
     search_param = "name"
 
 

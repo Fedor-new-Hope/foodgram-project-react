@@ -3,6 +3,7 @@ from recipes.models import ShoppingCart
 
 
 def collect_shopping_cart(request):
+    """Формирование корзины покупок."""
     shopping_cart = ShoppingCart.objects.filter(user=request.user).all()
     shopping_list = {}
     for item in shopping_cart:

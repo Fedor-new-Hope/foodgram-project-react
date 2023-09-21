@@ -1,4 +1,5 @@
 # Проект «Фудграм» (продуктовый помошник)
+
 доступен по адресу https://foodbigbubam.ddns.net/
 
 ## Стек технологий:
@@ -73,6 +74,6 @@ docker-compose exec backend python manage.py createsuperuser
 ```
 ### Проект готов к работе
 
-Backend проекта выполнил студент 56 когорты Яндекс Практикума  
-Fedor Kulabuhov
-https://github.com/Fedor-new-Hope
+- Backend проекта выполнил студент 56 когорты Яндекс Практикума  
+- Fedor Kulabuhov
+- https://github.com/Fedor-new-Hope

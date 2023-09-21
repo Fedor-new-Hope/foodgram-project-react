@@ -48,6 +48,7 @@ class Recipe(models.Model):
     """Модель рецепта"""
     author = models.ForeignKey(
         User,
+        help_text='Выберите автора',
         related_name="recipes",
         verbose_name="Автор",
         on_delete=models.CASCADE,
@@ -69,9 +70,11 @@ class Recipe(models.Model):
     )
     tags = models.ManyToManyField(
         Tag,
+        help_text='Выберите тег',
         verbose_name="Тэг",
     )
     cooking_time = models.PositiveIntegerField(
+        help_text='в минутах',
         verbose_name="Время приготовления",
         validators=[
             validators.MinValueValidator(

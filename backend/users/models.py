@@ -33,6 +33,7 @@ class Subscribe(models.Model):
     """Модель Подписчик."""
     user = models.ForeignKey(
         User,
+        help_text='Подписчик',
         on_delete=models.CASCADE,
         related_name="subscriber",
         verbose_name="Подписчик",

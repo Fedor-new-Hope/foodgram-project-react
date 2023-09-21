@@ -5,9 +5,11 @@ from django.db import models
 class User(AbstractUser):
     """Кастомная модель юзера"""
     email = models.EmailField(
+        help_text='Адрес электронной почты',
         max_length=254, verbose_name="Email", unique=True
     )
     username = models.CharField(
+        help_text='Уникальный юзернейм',
         max_length=150,
         verbose_name="Логин",
         unique=True,
